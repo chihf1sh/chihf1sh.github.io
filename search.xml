@@ -71,7 +71,7 @@
   </entry>
   <entry>
     <title>实验1：发光二极管走马灯电路设计与实现</title>
-    <url>/2020/08/04/%E5%AE%9E%E9%AA%8C1%EF%BC%9A%E5%8F%91%E5%85%89%E4%BA%8C%E6%9E%81%E7%AE%A1%E8%B5%B0%E9%A9%AC%E7%81%AF%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/</url>
+    <url>/2020/08/05/%E5%AE%9E%E9%AA%8C1%EF%BC%9A%E5%8F%91%E5%85%89%E4%BA%8C%E6%9E%81%E7%AE%A1%E8%B5%B0%E9%A9%AC%E7%81%AF%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h4 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h4><p>设计并实现一个控制 16 个发光二极管亮灭的电路，仿真验证其功能，并下载到实验板测试。</p>
 <ul>
 <li>单点移动模式：从左至右依次循环点亮 16 个发光二极管，每个发光二极管的点亮时间为 0.5 秒；</li>
@@ -87,6 +87,97 @@
       </categories>
       <tags>
         <tag>vhdl</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KNN算法</title>
+    <url>/2020/08/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A01%EF%BC%9AKNN/</url>
+    <content><![CDATA[<h4 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h4><p>通过比较预测点与已知数据集各个点之间的距离，比较得到距离前几名的点，从而对预测点的属性进行判定。</p>
+<h4 id="2-使用skit-learn"><a href="#2-使用skit-learn" class="headerlink" title="2. 使用skit-learn"></a>2. 使用skit-learn</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基本演示</span></span><br><span class="line"><span class="comment">#1.导入我们的数据 raw_data_x raw_data_y是我们的原始数据</span></span><br><span class="line">raw_data_x = [[<span class="number">3.39</span>,<span class="number">2.33</span>],[<span class="number">3.11</span>,<span class="number">1.78</span>],[<span class="number">1.34</span>,<span class="number">3.36</span>],[<span class="number">3.58</span>,<span class="number">4.67</span>],[<span class="number">2.28</span>,<span class="number">2.86</span>],					 [<span class="number">7.42</span>,<span class="number">4.69</span>],[<span class="number">5.74</span>,<span class="number">3.53</span>],[<span class="number">9.17</span>,<span class="number">2.51</span>],[<span class="number">7.79</span>,<span class="number">3.42</span>],[<span class="number">7.93</span>,<span class="number">0.79</span>]]</span><br><span class="line">raw_data_y = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">x_train = np.array(raw_data_x)</span><br><span class="line">y_train = np.array(raw_data_y)</span><br><span class="line"><span class="comment">#x为预测数据</span></span><br><span class="line">x = np.array([<span class="number">8.09</span>,<span class="number">3.36</span>])</span><br><span class="line"><span class="comment">#2.调用skit-learn</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier <span class="comment">#调用库</span></span><br><span class="line">KNN_classifier = KNeighborsClassifier(n_neighbors=<span class="number">6</span>) <span class="comment">#给定neighbor参数</span></span><br><span class="line">KNN_classifier.fit(x_train,y_train) <span class="comment">#fit模型</span></span><br><span class="line">KNN_classifier.predict(x) <span class="comment">#预测</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h5 id="train-test-split"><a href="#train-test-split" class="headerlink" title="train_test_split"></a>train_test_split</h5></li>
+</ol>
+<p>将数据集进行划分，从而可以对模型的可靠性进行检验</p>
+<p>这里我们调用<code>iris</code>数据集来进行演示操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#iris是一个记录鸢尾花的数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">iris=datasets.load_iris()</span><br><span class="line">x=iris.data</span><br><span class="line">y=iris.targets</span><br></pre></td></tr></table></figure>
+
+<p>为了对模型进行校验，我们使用<code>train_test_spilt</code>对数据集进行划分</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#train_test_spilt</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>) </span><br><span class="line"><span class="comment">#test_size指的是测试数据所占用的比例，random是随机种子，再进行调试操作的时候，保证random值的一致，可以方便我们的工作</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><h5 id="accuracy-score"><a href="#accuracy-score" class="headerlink" title="accuracy_score"></a>accuracy_score</h5></li>
+</ol>
+<p>对于测试数据集的可靠性进行统计，作为衡量数据集是否可靠的一个标准</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#digit是一个记录手写体的库</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">digits=datasets.load_digit()</span><br><span class="line">x=digits.data</span><br><span class="line">y=digits.target</span><br><span class="line"><span class="comment">#train_test_split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#train and fit</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn_clf=KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">knn_clf.fit(x_train,y_train)</span><br><span class="line">y_predict=knn_clf.predict(x_test)</span><br><span class="line"><span class="comment">#accuracy_score是对于预测准确判断的数值</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line">accuracy_score(y_test,y_predict)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><h5 id="grid-search"><a href="#grid-search" class="headerlink" title="grid_search"></a>grid_search</h5><p>超参数：在机器学习开始前进行调试的值，也就是所谓的“调参”。</p>
+<p>网格搜索：</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#调用数据集</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">digits=datasets.load_digits()</span><br><span class="line">x=digits.data</span><br><span class="line">y=digits.target</span><br><span class="line"><span class="comment">#train_test_split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#param_grid 参数网格</span></span><br><span class="line">param_grid =[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'weights'</span>:[<span class="string">'uniform'</span>],</span><br><span class="line">        <span class="string">'n_neighbors'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'weights'</span>:[<span class="string">'distance'</span>],</span><br><span class="line">        <span class="string">'n_neighbors'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)],</span><br><span class="line">        <span class="string">'p'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">6</span>)]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">knn_clf =KNeighborsClassifier()</span><br><span class="line"><span class="comment">#GridSearchCV方法</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">grid_search =GridSearchCV(knn_clf,param_grid,n_jobs=<span class="number">-1</span>,verbose=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#n_jobs表示参与的cpu核数，verbose表示显示进程</span></span><br><span class="line">grid_search.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">grid_search.best_estimator_</span><br><span class="line"><span class="comment">#最佳分类器超参数值</span></span><br><span class="line">grid_search.best_score_</span><br><span class="line"><span class="comment">#最佳分类器准确度</span></span><br><span class="line">grid_search.best_params_</span><br><span class="line"><span class="comment">#对于数组显示参数</span></span><br><span class="line">knn_clf=grid_search.best_estimator_</span><br><span class="line"><span class="comment">#获得最佳预测器</span></span><br><span class="line">knn_clf.score(x_test,y_test)</span><br><span class="line"><span class="comment">#最佳预测器预测分值</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><h5 id="feature-scaling"><a href="#feature-scaling" class="headerlink" title="feature scaling"></a>feature scaling</h5></li>
+</ol>
+<p>数据归一化可以防止数据被某种属性主导，归一化可以把数据映射到同一个尺度</p>
+<ul>
+<li><p>最值归一化：适合于有明显边界的情况，受边界影响很大</p>
+</li>
+<li><p>均值方差归一化：将数据诡异到均值为0方差为1分布，可以应用有明显边界（一般情况）</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#dataset</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">digits=datasets.load_digits()</span><br><span class="line">x=digits.data</span><br><span class="line">y=digits.target</span><br><span class="line"><span class="comment">#train_test_split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#scaler</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">standardScaler =StandardScaler()</span><br><span class="line">standardScaler.fit(x_train) </span><br><span class="line"><span class="comment">#x_train归一化</span></span><br><span class="line">x_train = standardScaler.transform(x_train)</span><br><span class="line"><span class="comment">#测试数据归一化</span></span><br><span class="line">x_test_standard=standardScaler.transform(x_test)</span><br><span class="line"><span class="comment">#fit</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn_clf=KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">knn_clf.fit(x_train,y_train)</span><br><span class="line">knn_clf.score(x_test_standard,y_test)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h4><p>缺点：效率低下，高度数据相关，预测结果不具有可解释性，维数灾难</p>
+<p>(<a href="https://md.byr.moe/uploads/upload_623555fe4345d9ed723f3f41af0f9ffe.png" target="_blank" rel="noopener">https://md.byr.moe/uploads/upload_623555fe4345d9ed723f3f41af0f9ffe.png</a>)</p>
+]]></content>
+      <categories>
+        <category>MachineLearning</category>
+      </categories>
+      <tags>
+        <tag>MachineLearning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Day0:计算机基础</title>
+    <url>/2020/08/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<ol>
+<li><p>IP与域名</p>
+<p>IP地址：互联网上的每一个网络和每一台主机分配的一个逻辑地址，访问某个网站的时候访问的就是该网站的IP地址</p>
+<p>MAC地址：计算机的物理地址，是唯一的，尽在局域网中发挥作用</p>
+<p>IPV4：第四版互联网通信协议</p>
+<p>IPV6：第六版互联网通信协议</p>
+<p>域名：IP地址并不便于记忆，将IP地址对应一个好记的地址，这个就是域名，一个IP地址可以有多个域名</p>
+<p>URL：网址，统一资源定位符</p>
+<p>DNS：将用户输入的域名进行域名解析到对应的IP地址进行访问</p>
+<p>DNS劫持：在控制下，用户本应访问A地址，错误的访问到B地址</p>
+</li>
+<li><p>虚拟系统连接三种模式</p>
+<p>桥接：虚拟机和主机处于平等的地位，IP处于同一网段，子网掩码，网关，DNS等参数都相同</p>
+<p>NAT：将主机作为路由，虚拟机通过主机访问互联网</p>
+</li>
+<li><p>局域网与广域网</p>
+<p>局域网：内网LAN</p>
+<p>广域网：外网WAN</p>
+<p>端口映射：将内网主机中的一个端口映射到外网主机的一个端口</p>
+</li>
+<li><p>网卡 网关</p>
+<p>网卡：计算机用于联网的硬件</p>
+<p>网关：当前主机的默认路由，连接两个不同网段的网络</p>
+</li>
+<li><p>cookie session</p>
+<p>cookie：存放于客户端的用户数据</p>
+<p>session：存放于服务端的用户数据</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>CS扫盲</category>
+      </categories>
+      <tags>
+        <tag>CS</tag>
       </tags>
   </entry>
 </search>

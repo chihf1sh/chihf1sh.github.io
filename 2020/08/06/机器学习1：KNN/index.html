@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    关于USB-Blaster的解决方案 |  
+    KNN算法 |  
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -46,7 +46,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-关于USB-Blaster的解决方案"
+  id="post-机器学习1：KNN"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -57,18 +57,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  关于USB-Blaster的解决方案
+  KNN算法
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/08/04/%E5%85%B3%E4%BA%8EUSB-Blaster%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
-  <time datetime="2020-08-04T13:55:50.000Z" itemprop="datePublished">2020-08-04</time>
+      <a href="/2020/08/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A01%EF%BC%9AKNN/" class="article-date">
+  <time datetime="2020-08-06T13:55:50.000Z" itemprop="datePublished">2020-08-06</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/solution/">solution</a>
+    <a class="article-category-link" href="/categories/MachineLearning/">MachineLearning</a>
   </div>
   
 <div class="word_count">
@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">26</span>
+            <span class="post-count">828</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">3 分钟</span>
         </span>
     </span>
 </div>
@@ -93,19 +93,54 @@
      
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <ul>
-<li>计算机重启</li>
-<li>狂按F8</li>
-<li>高级选项</li>
-<li>启动设置</li>
-<li>禁止驱动程序强制签名</li>
+  <h4 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h4><p>通过比较预测点与已知数据集各个点之间的距离，比较得到距离前几名的点，从而对预测点的属性进行判定。</p>
+<h4 id="2-使用skit-learn"><a href="#2-使用skit-learn" class="headerlink" title="2. 使用skit-learn"></a>2. 使用skit-learn</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#基本演示</span></span><br><span class="line"><span class="comment">#1.导入我们的数据 raw_data_x raw_data_y是我们的原始数据</span></span><br><span class="line">raw_data_x = [[<span class="number">3.39</span>,<span class="number">2.33</span>],[<span class="number">3.11</span>,<span class="number">1.78</span>],[<span class="number">1.34</span>,<span class="number">3.36</span>],[<span class="number">3.58</span>,<span class="number">4.67</span>],[<span class="number">2.28</span>,<span class="number">2.86</span>],					 [<span class="number">7.42</span>,<span class="number">4.69</span>],[<span class="number">5.74</span>,<span class="number">3.53</span>],[<span class="number">9.17</span>,<span class="number">2.51</span>],[<span class="number">7.79</span>,<span class="number">3.42</span>],[<span class="number">7.93</span>,<span class="number">0.79</span>]]</span><br><span class="line">raw_data_y = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">x_train = np.array(raw_data_x)</span><br><span class="line">y_train = np.array(raw_data_y)</span><br><span class="line"><span class="comment">#x为预测数据</span></span><br><span class="line">x = np.array([<span class="number">8.09</span>,<span class="number">3.36</span>])</span><br><span class="line"><span class="comment">#2.调用skit-learn</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier <span class="comment">#调用库</span></span><br><span class="line">KNN_classifier = KNeighborsClassifier(n_neighbors=<span class="number">6</span>) <span class="comment">#给定neighbor参数</span></span><br><span class="line">KNN_classifier.fit(x_train,y_train) <span class="comment">#fit模型</span></span><br><span class="line">KNN_classifier.predict(x) <span class="comment">#预测</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h5 id="train-test-split"><a href="#train-test-split" class="headerlink" title="train_test_split"></a>train_test_split</h5></li>
+</ol>
+<p>将数据集进行划分，从而可以对模型的可靠性进行检验</p>
+<p>这里我们调用<code>iris</code>数据集来进行演示操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#iris是一个记录鸢尾花的数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">iris=datasets.load_iris()</span><br><span class="line">x=iris.data</span><br><span class="line">y=iris.targets</span><br></pre></td></tr></table></figure>
+
+<p>为了对模型进行校验，我们使用<code>train_test_spilt</code>对数据集进行划分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#train_test_spilt</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>) </span><br><span class="line"><span class="comment">#test_size指的是测试数据所占用的比例，random是随机种子，再进行调试操作的时候，保证random值的一致，可以方便我们的工作</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><h5 id="accuracy-score"><a href="#accuracy-score" class="headerlink" title="accuracy_score"></a>accuracy_score</h5></li>
+</ol>
+<p>对于测试数据集的可靠性进行统计，作为衡量数据集是否可靠的一个标准</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#digit是一个记录手写体的库</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">digits=datasets.load_digit()</span><br><span class="line">x=digits.data</span><br><span class="line">y=digits.target</span><br><span class="line"><span class="comment">#train_test_split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#train and fit</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn_clf=KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">knn_clf.fit(x_train,y_train)</span><br><span class="line">y_predict=knn_clf.predict(x_test)</span><br><span class="line"><span class="comment">#accuracy_score是对于预测准确判断的数值</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line">accuracy_score(y_test,y_predict)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><h5 id="grid-search"><a href="#grid-search" class="headerlink" title="grid_search"></a>grid_search</h5><p>超参数：在机器学习开始前进行调试的值，也就是所谓的“调参”。</p>
+<p>网格搜索：</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#调用数据集</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">digits=datasets.load_digits()</span><br><span class="line">x=digits.data</span><br><span class="line">y=digits.target</span><br><span class="line"><span class="comment">#train_test_split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#param_grid 参数网格</span></span><br><span class="line">param_grid =[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'weights'</span>:[<span class="string">'uniform'</span>],</span><br><span class="line">        <span class="string">'n_neighbors'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'weights'</span>:[<span class="string">'distance'</span>],</span><br><span class="line">        <span class="string">'n_neighbors'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)],</span><br><span class="line">        <span class="string">'p'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">6</span>)]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">knn_clf =KNeighborsClassifier()</span><br><span class="line"><span class="comment">#GridSearchCV方法</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">grid_search =GridSearchCV(knn_clf,param_grid,n_jobs=<span class="number">-1</span>,verbose=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#n_jobs表示参与的cpu核数，verbose表示显示进程</span></span><br><span class="line">grid_search.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">grid_search.best_estimator_</span><br><span class="line"><span class="comment">#最佳分类器超参数值</span></span><br><span class="line">grid_search.best_score_</span><br><span class="line"><span class="comment">#最佳分类器准确度</span></span><br><span class="line">grid_search.best_params_</span><br><span class="line"><span class="comment">#对于数组显示参数</span></span><br><span class="line">knn_clf=grid_search.best_estimator_</span><br><span class="line"><span class="comment">#获得最佳预测器</span></span><br><span class="line">knn_clf.score(x_test,y_test)</span><br><span class="line"><span class="comment">#最佳预测器预测分值</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><h5 id="feature-scaling"><a href="#feature-scaling" class="headerlink" title="feature scaling"></a>feature scaling</h5></li>
+</ol>
+<p>数据归一化可以防止数据被某种属性主导，归一化可以把数据映射到同一个尺度</p>
+<ul>
+<li><p>最值归一化：适合于有明显边界的情况，受边界影响很大</p>
+</li>
+<li><p>均值方差归一化：将数据诡异到均值为0方差为1分布，可以应用有明显边界（一般情况）</p>
+</li>
 </ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#dataset</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">digits=datasets.load_digits()</span><br><span class="line">x=digits.data</span><br><span class="line">y=digits.target</span><br><span class="line"><span class="comment">#train_test_split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#scaler</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">standardScaler =StandardScaler()</span><br><span class="line">standardScaler.fit(x_train) </span><br><span class="line"><span class="comment">#x_train归一化</span></span><br><span class="line">x_train = standardScaler.transform(x_train)</span><br><span class="line"><span class="comment">#测试数据归一化</span></span><br><span class="line">x_test_standard=standardScaler.transform(x_test)</span><br><span class="line"><span class="comment">#fit</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn_clf=KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">knn_clf.fit(x_train,y_train)</span><br><span class="line">knn_clf.score(x_test_standard,y_test)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h4><p>缺点：效率低下，高度数据相关，预测结果不具有可解释性，维数灾难</p>
+<p>(<a href="https://md.byr.moe/uploads/upload_623555fe4345d9ed723f3f41af0f9ffe.png" target="_blank" rel="noopener">https://md.byr.moe/uploads/upload_623555fe4345d9ed723f3f41af0f9ffe.png</a>)</p>
  
       <!-- reward -->
       
@@ -172,30 +207,23 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/08/04/%E5%85%B3%E4%BA%8EUSB-Blaster%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/08/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A01%EF%BC%9AKNN/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MachineLearning/" rel="tag">MachineLearning</a></li></ul>
+
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2020/08/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Day0:计算机基础
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/08/04/vhdl2%20%E6%97%B6%E5%BA%8F%E7%94%B5%E8%B7%AF%E5%9F%BA%E7%A1%80/" class="article-nav-link">
+      <a href="/2020/08/05/%E5%AE%9E%E9%AA%8C1%EF%BC%9A%E5%8F%91%E5%85%89%E4%BA%8C%E6%9E%81%E7%AE%A1%E8%B5%B0%E9%A9%AC%E7%81%AF%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">vhdl2 时序电路基础</div>
+        <div class="article-nav-title">实验1：发光二极管走马灯电路设计与实现</div>
       </a>
     
   </nav>
