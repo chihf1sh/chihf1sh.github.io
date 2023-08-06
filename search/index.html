@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang=zh>
+<html lang=En>
 <head>
     <!-- so meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="search">
+    <meta name="description" content="Note">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Search">
 <meta property="og:url" content="http://example.com/search/index.html">
-<meta property="og:site_name" content="Blog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-06T10:45:22.000Z">
-<meta property="article:modified_time" content="2023-08-06T10:45:22.215Z">
+<meta property="og:site_name" content="vwv">
+<meta property="og:description" content="Note">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-08-06T10:55:27.285Z">
+<meta property="article:modified_time" content="2023-08-06T10:55:27.285Z">
 <meta property="article:author" content="vwv">
 <meta name="twitter:card" content="summary">
     
@@ -34,7 +36,7 @@
       
     
     <!-- title -->
-    <title>search</title>
+    <title>Search</title>
     <!-- async scripts -->
     <!-- Google Analytics -->
 
@@ -67,22 +69,26 @@
     
   
     <div id="title">
-      <h1 class="p-name">Blog</h1>
+      <h1 class="p-name">vwv</h1>
     </div>
   </a>
   <div id="nav">
     <ul>
       <li class="icon">
-        <a href="#" aria-label="目录"><i class="fa-solid fa-bars fa-2x"></i></a>
+        <a href="#" aria-label="القائمة"><i class="fa-solid fa-bars fa-2x"></i></a>
       </li>
       <!--
-     --><li><a href="/">首页</a></li><!--
+     --><li><a href="/">الرئيسية</a></li><!--
    --><!--
-     --><li><a href="/about/">关于</a></li><!--
+     --><li><a href="/archives/">منشورات</a></li><!--
    --><!--
-     --><li><a href="/archives/">归档</a></li><!--
+     --><li><a href="/tags/">تسمية</a></li><!--
    --><!--
-     --><li><a href="/search/">搜索</a></li><!--
+     --><li><a href="/categories/">تصنيف</a></li><!--
+   --><!--
+     --><li><a href="/about/">معلومات عنّي</a></li><!--
+   --><!--
+     --><li><a href="/search/">بحث</a></li><!--
    -->
     </ul>
   </div>
@@ -94,31 +100,42 @@
 
   <div class="content" itemprop="articleBody">
       
-          
-        
+        <section id="search">
+  <form>
+    <input type="text" class="search-input" id="search-input" placeholder="بحث...">
+  </form>
+  <div id="search-result"></div>
+  <p class="search-no-result">لم يتم العثور على نتائج.</p>
+</section>
+
+      
   </div>
 </article>
 
         
         <footer id="footer">
   <div class="footer-left">
-    Copyright &copy;
+    حقوق النشر &copy;
     
     
-    2016-2023
+    2023
     vwv
   </div>
   <div class="footer-right">
     <nav>
       <ul>
         <!--
-       --><li><a href="/">首页</a></li><!--
+       --><li><a href="/">الرئيسية</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
+       --><li><a href="/archives/">منشورات</a></li><!--
      --><!--
-       --><li><a href="/archives/">归档</a></li><!--
+       --><li><a href="/tags/">تسمية</a></li><!--
      --><!--
-       --><li><a href="/search/">搜索</a></li><!--
+       --><li><a href="/categories/">تصنيف</a></li><!--
+     --><!--
+       --><li><a href="/about/">معلومات عنّي</a></li><!--
+     --><!--
+       --><li><a href="/search/">بحث</a></li><!--
      -->
       </ul>
     </nav>
@@ -146,6 +163,45 @@
 <script src="/js/main.js"></script>
 
 <!-- search -->
+
+  
+<script src="/js/search.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+
+    var $inputArea = $("input#search-input");
+    var $resultArea = document.querySelector("div#search-result");
+
+    $inputArea.focus(function() {
+      var search_path = "search.xml";
+      if (search_path.length == 0) {
+        search_path = "search.xml";
+      }
+      var path = "/" + search_path;
+      searchFunc(path, 'search-input', 'search-result');
+    });
+
+    $inputArea.keydown(function(e) {
+      if (e.which == 13) {
+        e.preventDefault();
+      }
+    });
+
+    var observer = new MutationObserver(function(mutationsList, observer) {
+      if (mutationsList.length == 1) {
+        if (mutationsList[0].addedNodes.length) {
+          $(".search-no-result").hide();
+        } else if (mutationsList[0].removedNodes.length) {
+          $(".search-no-result").show(200);
+        }
+      }
+    });
+
+    observer.observe($resultArea, { childList: true });
+
+  });
+  </script>
 
 <!-- Baidu Analytics -->
 
