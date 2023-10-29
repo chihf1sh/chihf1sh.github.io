@@ -14,7 +14,7 @@
 <meta property="og:description" content="samba vsftpd 0-EnumerationPort scanning using nmap. 1sudo nmap -n -v -sC -sV -sS -T4 -p- 10.10.10.3 --max-retries&#x3D;0 The result is as follows: 1234567891011121314151617181920212223242526272829303132333">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-10-29T15:00:00.000Z">
-<meta property="article:modified_time" content="2023-10-29T15:34:10.230Z">
+<meta property="article:modified_time" content="2023-10-29T16:00:15.502Z">
 <meta property="article:author" content="vwv">
 <meta property="article:tag" content="htb">
 <meta name="twitter:card" content="summary">
@@ -86,8 +86,6 @@
     <span id="actions">
       <ul>
         
-        
-        <li><a class="icon" aria-label="下一篇" href="/2023/10/18/page/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -179,7 +177,7 @@
 <p>Howerver, nothing exists here.</p>
 <h2 id="Vsftpd-2-3-4-Backdoor"><a href="#Vsftpd-2-3-4-Backdoor" class="headerlink" title="Vsftpd 2.3.4 Backdoor"></a>Vsftpd 2.3.4 Backdoor</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">─$ ftp 10.10.10.3</span><br><span class="line">Connected to 10.10.10.3.</span><br><span class="line">220 (vsFTPd 2.3.4)</span><br><span class="line">Name (10.10.10.3:vwv): test:)</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>Listening on local:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─$ sudo nc -nvlp 6200</span><br><span class="line">[sudo] password for vwv:</span><br><span class="line">listening on [any] 6200 ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc 10.10.10.3 6200</span><br></pre></td></tr></table></figure>
 <p>Nothing happened.</p>
 <h2 id="Samba-USERNAME-Map-Script"><a href="#Samba-USERNAME-Map-Script" class="headerlink" title="Samba USERNAME Map Script"></a>Samba USERNAME Map Script</h2><p>use msf</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br></pre></td></tr></table></figure>
