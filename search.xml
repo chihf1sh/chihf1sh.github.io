@@ -5,8 +5,8 @@
     
     <entry>
       <title>HTB-Linux-1-Brainfuck</title>
-      <link href="/2023/10/30/page/"/>
-      <url>/2023/10/30/page/</url>
+      <link href="/2023/10/30/HTB-Linux-1-Brainfuck/"/>
+      <url>/2023/10/30/HTB-Linux-1-Brainfuck/</url>
       
         <content type="html"><![CDATA[<p><code>samba</code> <code>vsftpd</code></p><h1 id="0-Enumeration"><a href="#0-Enumeration" class="headerlink" title="0-Enumeration"></a>0-Enumeration</h1>]]></content>
       
